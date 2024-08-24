@@ -1,0 +1,10 @@
+upstream fastcgi_backend {
+   server php:9000;
+}
+
+server {
+   listen 80;
+   set $MAGE_ROOT /app;
+   server_name magento.local;
+   include /app/nginx.conf.sample;
+}

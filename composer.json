@@ -1,0 +1,28 @@
+{
+  "name": "awesoft/magento-docker",
+  "description": "Magento 2 docker image",
+  "type": "magento2-component",
+  "version": "8.2.0",
+  "license": [
+    "MIT"
+  ],
+  "require": {
+    "php": "^8.2",
+    "magento/magento2-base": "^2.4"
+  },
+  "conflict": {
+    "magento/magento-cloud-docker": "*"
+  },
+  "extra": {
+    "map": [
+      [
+        "docker-compose.yml",
+        "docker-compose.yml"
+      ],
+      [
+        ".docker",
+        ".docker"
+      ]
+    ]
+  }
+}

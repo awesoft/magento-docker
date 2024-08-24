@@ -1,0 +1,52 @@
+#!/usr/bin/env sh
+# shellcheck disable=SC2086,SC2090,SC2089
+
+set -e
+
+options="--db-name=main
+  --db-user=user
+  --db-host=mariadb
+  --db-password=password
+  --admin-firstname=Admin
+  --admin-lastname=Admin
+  --admin-email=admin@magento.local
+  --admin-user=admin
+  --admin-password=P@ssw0rd
+  --use-rewrites=1
+  --document-root-is-pub=1
+  --backend-frontname=admin
+  --enable-debug-logging=1
+  --enable-syslog-logging=1
+  --allow-parallel-generation
+  --base-url=http://magento.local
+  --search-engine=opensearch
+  --opensearch-host=opensearch
+  --session-save=redis
+  --session-save-redis-host=redis
+  --session-save-redis-port=6379
+  --session-save-redis-db=0
+  --cache-backend=redis
+  --cache-backend-redis-server=redis
+  --cache-backend-redis-port=6379
+  --cache-backend-redis-db=1
+  --page-cache=redis
+  --page-cache-redis-server=redis
+  --page-cache-redis-port=6379
+  --page-cache-redis-db=2"
+
+if grep -q '^  rabbitmq:' /app/docker-compose.yml; then
+  options="$options
+    --amqp-host=rabbitmq
+    --amqp-port=5672
+    --amqp-user=guest
+    --amqp-password=guest
+    --amqp-virtualhost=magento
+    --consumers-wait-for-messages=1"
+fi
+
+/app/bin/magento setup:install ${options}
+/app/bin/magento -q deploy:mode:set production
+/app/bin/magento -q config:set admin/security/session_lifetime 31536000
+/app/bin/magento -q config:set system/smtp/host mailcatcher
+/app/bin/magento -q config:set system/smtp/transport smtp
+/app/bin/magento -q config:set system/smtp/port 1025

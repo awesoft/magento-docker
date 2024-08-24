@@ -1,0 +1,97 @@
+services:
+  mailcatcher:
+    image: dockage/mailcatcher:0.9.0
+    hostname: mailcatcher
+    ports:
+      - "1080:1080"
+      - "1025:1025"
+  mariadb:
+    image: mariadb:10.6
+    hostname: mariadb
+    shm_size: 2gb
+    environment:
+      - MARIADB_RANDOM_ROOT_PASSWORD=1
+      - MARIADB_PASSWORD=password
+      - MARIADB_DATABASE=main
+      - MARIADB_USER=user
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb-data:/var/lib/mysql
+      - .docker/mariadb/my.cnf:/etc/my.cnf
+      - .docker/mariadb/initdb.d:/docker-entrypoint-initdb.d
+  opensearch:
+    image: opensearchproject/opensearch:2.12.0
+    hostname: opensearch
+    ports:
+      - "9200:9200"
+    environment:
+      - cluster.routing.allocation.disk.threshold_enabled=false
+      - cluster.name=magento-cluster
+      - discovery.type=single-node
+      - discovery.seed_hosts=opensearch
+      - bootstrap.memory_lock=true
+      - DISABLE_SECURITY_PLUGIN=true
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - opensearch-data:/usr/share/opensearch/data
+  redis:
+    image: redis:7.2-alpine
+    hostname: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+#  # Uncomment these lines if you want to use rabbitmq
+#  rabbitmq:
+#    image: rabbitmq:3.12-alpine
+#    hostname: rabbitmq
+#    ports:
+#      - "5672:5672"
+#    environment:
+#      RABBITMQ_DEFAULT_USER: guest
+#      RABBITMQ_DEFAULT_PASS: guest
+#      RABBITMQ_DEFAULT_VHOST: magento
+#    volumes:
+#      - rabbitmq-data:/var/lib/rabbitmq
+  php:
+    image: ghcr.io/awesoft/magento-docker:8.2
+    hostname: php
+    command: run-fpm
+    volumes:
+      - .:/app:ro
+      - ./var:/app/var:rw
+      - ./pub:/app/pub:rw
+      - ./vendor:/app/vendor:rw
+      - ./generated:/app/generated:rw
+      - $HOME/.composer:/etc/composer:rw
+    depends_on:
+      - opensearch
+      - mariadb
+      - redis
+      - mailcatcher
+  cron:
+    extends:
+      service: php
+    hostname: cron
+    command: run-cron
+  nginx:
+    image: nginx:1.24-alpine-slim
+    hostname: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - .:/app:ro
+      - ./.docker/nginx/templates:/etc/nginx/templates
+    depends_on:
+      - php
+volumes:
+  redis-data:
+  deploy-data:
+  mariadb-data:
+  composer-data:
+#  rabbitmq-data: # Uncomment this line if you want to use rabbitmq
+  opensearch-data:

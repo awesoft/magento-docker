@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+
+set -e
+
+echo "Running cron daemon in foreground"
+exec /usr/sbin/crond -f -P -s

@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+
+set -e
+
+echo "Running php-fpm in foreground"
+exec /usr/sbin/php-fpm -F

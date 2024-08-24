@@ -1,0 +1,4 @@
+generated/*
+vendor/*
+var/*
+pub/*
