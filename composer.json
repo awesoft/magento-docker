@@ -2,7 +2,7 @@
   "name": "awesoft/magento-docker",
   "description": "Magento 2 docker image",
   "type": "magento2-component",
-  "version": "8.2.0",
+  "version": "8.2.1",
   "license": [
     "MIT"
   ],

@@ -62,11 +62,7 @@ services:
     hostname: php
     command: run-fpm
     volumes:
-      - .:/app:ro
-      - ./var:/app/var:rw
-      - ./pub:/app/pub:rw
-      - ./vendor:/app/vendor:rw
-      - ./generated:/app/generated:rw
+      - .:/app:rw
       - $HOME/.composer:/etc/composer:rw
     depends_on:
       - opensearch

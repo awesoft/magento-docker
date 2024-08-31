@@ -37,7 +37,7 @@ A lightweight, open-source Docker container for Magento2, tailored for a standar
 - Redis: [http://127.0.0.1:6379](http://127.0.0.1:6379)
 - Check `docker-compose.yml` for more information.
 
-## Additional Command
+## Additional Command and Configuration
 - Use the `run-install` command to execute `setup:install` with default options, ideal for a fresh Magento project.
   ```
   docker compose exec -it php run-install
@@ -46,3 +46,4 @@ A lightweight, open-source Docker container for Magento2, tailored for a standar
     - [http://magento.local/admin/](http://magento.local/admin/)
     - Username: `admin`
     - Password: `P@ssw0rd`
+- By default, the `xdebug` module is disabled. To enable it, add a `XDEBUG_MODE` environment variable in your docker-compose.yml file.
