@@ -4,7 +4,7 @@ set -e
 
 if [ -n "${XDEBUG_MODE}" ]; then
   echo "[xdebug]" > /etc/app/php/95_app_xdebug.ini
-  echo "xdebug.mode = ${XDEBUG_MODE}" > /etc/app/php/95_app_xdebug.ini
+  echo "xdebug.mode = ${XDEBUG_MODE}" >> /etc/app/php/95_app_xdebug.ini
 fi
 
 echo "Running php-fpm in foreground"

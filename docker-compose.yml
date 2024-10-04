@@ -64,6 +64,7 @@ services:
     volumes:
       - .:/app:rw
       - $HOME/.composer:/etc/composer:rw
+      - .docker/php/conf.d:/etc/app/php:rw
     depends_on:
       - opensearch
       - mariadb

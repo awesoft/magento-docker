@@ -12,11 +12,11 @@ ENV COMPOSER_MEMORY_LIMIT=-1
 ENV COMPOSER_HOME=/etc/composer
 ENV PHP_INI_SCAN_DIR='/etc/php82/conf.d:/etc/app/php'
 
-RUN apk add --no-cache jq curl nano rsync git zip unzip cronie openssh\
+RUN apk add --no-cache jq curl nano rsync git zip unzip cronie openssh libwebp libwebp-tools \
         php82 php82-apcu php82-fpm php82-bcmath php82-bz2 php82-exif php82-ctype php82-curl php82-dom php82-xml \
         php82-fileinfo php82-gd php82-gettext php82-iconv php82-intl php82-json php82-mbstring php82-mysqli \
         php82-openssl php82-pdo_mysql php82-phar php82-simplexml php82-soap php82-sockets php82-sodium php82-xdebug \
-        php82-tokenizer php82-xmlwriter php82-xsl php82-zip php82-zlib php82-opcache php82-pecl-redis \
+        php82-tokenizer php82-xmlwriter php82-xsl php82-zip php82-zlib php82-opcache php82-pecl-redis php82-pecl-vips \
     && ln -s /usr/sbin/php-fpm82 /usr/sbin/php-fpm \
     && ln -s /usr/bin/php82 /usr/bin/php \
     && crontab -u root -r \
